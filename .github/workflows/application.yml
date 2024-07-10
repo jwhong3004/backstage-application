@@ -10,7 +10,7 @@ on:
         required: false  # Is it optional or required?      
       ApplicationName:
         description: 'Name of the Application'  # What's this input for?
-        required: true  # Is it optional or required?
+        required: false  # Is it optional or required?
       awsRegion:
         description: 'AWS Region for the instance'
         required: false
@@ -29,6 +29,7 @@ on:
     defaults:
       EKSname: ''
       awsRegion: ''
+      ApplicationName: ''
       Replicas: '1'        
 # Jobs to be executed in this workflow
 jobs:
