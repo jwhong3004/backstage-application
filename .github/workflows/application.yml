@@ -1,5 +1,5 @@
 # Define the name of the GitHub Action workflow
-name: Create an ec2 instance
+name: Create an Application instance
 # This workflow is manually triggered using the GitHub Actions UI
 on:
   workflow_dispatch:
@@ -28,8 +28,8 @@ on:
         required: true
 # Jobs to be executed in this workflow
 jobs:
-  # Job for applying the ec2 instance
-  apply_ec2:
+  # Job for applying the application instance
+  apply_application:
     # Use the latest Ubuntu runner
     runs-on: self-hosted
     
@@ -91,7 +91,7 @@ jobs:
     - name: Upload Terraform state file
       run: aws s3 cp ./${{ github.event.inputs.ApplicationName }} s3://wlsdn-s3/${{ github.event.inputs.ApplicationName }} --recursive --exclude ".git*" --exclude ".terraform*"
 
-  # Destroying the  ec2 instance
+  # Destroying the  application instance
   destroy_instance:
     runs-on: self-hosted
     
