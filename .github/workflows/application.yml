@@ -7,17 +7,17 @@ on:
     inputs:
       EKSname:
         description: 'Name of the EKS' 
-        required: true  # Is it optional or required?      
+        required: false  # Is it optional or required?      
       ApplicationName:
         description: 'Name of the Application'  # What's this input for?
         required: true  # Is it optional or required?
       awsRegion:
         description: 'AWS Region for the instance'
-        required: true
+        required: false
       Replicas:
         type: choice
         description: 'Count of Application'
-        required: true
+        required: false
         options: 
         - 1
         - 2
@@ -26,6 +26,10 @@ on:
       action:
         description: 'Action to perform (apply/destroy)'
         required: true
+    defaults:
+      EKSname: ''
+      awsRegion: ''
+      Replicas: '1'        
 # Jobs to be executed in this workflow
 jobs:
   # Job for applying the application instance
