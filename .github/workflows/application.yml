@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
     # Define inputs that are required for the manual trigger
     inputs:
+      EKSname:
+        description: 'Name of the EKS' 
+        required: true  # Is it optional or required?      
       ApplicationName:
         description: 'Name of the Application'  # What's this input for?
         required: true  # Is it optional or required?
@@ -72,9 +75,17 @@ jobs:
       working-directory: ${{ github.event.inputs.ApplicationName }}
       
     # Apply the Terraform plan
-    #- name: Terraform vars
+    - name: Terraform vars
+      run: |
+        sed -i -e 's/^ApplicationName *= *".*"/ApplicationName = "${{ github.event.inputs.ApplicationName }}"/' \
+           -e 's/^awsRegion *= *".*"/awsRegion = "${{ github.event.inputs.awsRegion }}"/' \
+           -e 's/^Replicas *= *[0-9]*/Replicas = ${{ github.event.inputs.Replicas }}/' \
+           -e 's/^eks_cluster_name *= *".*"/eks_cluster_name = "${{ github.event.inputs.EKSname }}"/' \
+           terraform.tfvars
+      working-directory: ${{ github.event.inputs.ApplicationName }}
+      
     - name: terraform apply
-      run: terraform apply -var ApplicationName=${{ github.event.inputs.ApplicationName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var Replicas=${{ github.event.inputs.Replicas }} -auto-approve
+      run: terraform apply -auto-approve
       working-directory: ${{ github.event.inputs.ApplicationName }}   
       
     - name: Upload Terraform state file
@@ -114,7 +125,7 @@ jobs:
       
     # Destroy all resources 
     - name: Terraform Destroy
-      run: terraform destroy -var ApplicationName=${{ github.event.inputs.ApplicationName }} -var awsRegion=${{ github.event.inputs.awsRegion }} -var instanceType=${{ github.event.inputs.instanceType }} -auto-approve
+      run: terraform destroy -auto-approve
       working-directory: ${{ github.event.inputs.ApplicationName }}
 
     - name: Upload Terraform state file
