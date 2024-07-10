@@ -92,7 +92,7 @@ jobs:
       run: aws s3 cp ./${{ github.event.inputs.ApplicationName }} s3://wlsdn-s3/${{ github.event.inputs.ApplicationName }} --recursive --exclude ".git*" --exclude ".terraform*"
 
   # Destroying the  application instance
-  destroy_instance:
+  destroy_application:
     runs-on: self-hosted
     
     # Execute this job only if the action input is "destroy"
