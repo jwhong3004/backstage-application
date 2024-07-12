@@ -12,7 +12,7 @@ on:
         description: 'Name of the Application'  # What's this input for?
         required: false  # Is it optional or required?
       awsRegion:
-        description: 'AWS Region for the instance'
+        description: 'AWS Region for the Application'
         required: false
       Replicas:
         type: choice
@@ -28,7 +28,7 @@ on:
         required: true
     defaults:
       EKSname: ''
-      awsRegion: ''
+      awsRegion: 'ap-northeast-2'
       ApplicationName: ''
       Replicas: '1'        
 # Jobs to be executed in this workflow
@@ -115,6 +115,7 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ github.event.inputs.awsRegion }}
 
     - name: Install Terraform state file
       run: aws s3 cp s3://wlsdn-s3/${{ github.event.inputs.ApplicationName }}/ ./${{ github.event.inputs.ApplicationName }} --recursive
