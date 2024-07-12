@@ -106,7 +106,7 @@ jobs:
         git config --global user.name "GitHub Actions"
         git add application_name.txt
         git commit -m "Save application name"
-        git remote add origin https://github.com/${{ github.repository }}.git
+        git remote remove origin 2>/dev/null && git remote add origin https://github.com/${{ github.repository }}.git
         git push https://${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
       working-directory: ${{ github.event.inputs.ApplicationName }}
         
