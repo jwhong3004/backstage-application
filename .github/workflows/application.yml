@@ -109,6 +109,9 @@ jobs:
         git add application_name.txt
         git commit -m "Save application name" 1>/dev/null && git push origin main || true
       working-directory: ${{ github.event.inputs.ApplicationName }}
+
+    - name: remove derectory
+      run: rm -rf ${{ github.event.inputs.ApplicationName }}     
         
   # Destroying the  application instance
   destroy_application:
@@ -153,3 +156,6 @@ jobs:
 
     - name: Upload Terraform state file
       run: aws s3 cp ./${{ env.app_name }} s3://wlsdn-s3/${{ env.app_name }} --recursive --exclude ".git*" --exclude ".terraform*"
+    
+    - name: remove derectory
+      run: rm -rf ${{ github.event.inputs.ApplicationName }}           
