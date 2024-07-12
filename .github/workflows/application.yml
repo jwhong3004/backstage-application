@@ -117,10 +117,16 @@ jobs:
     # Execute this job only if the action input is "destroy"
     if: ${{ github.event.inputs.action == 'destroy' }}
     
-    steps:     
+    steps:   
+    - name: Checkout specific file
+      uses: actions/checkout@v2
+      with:
+        sparse-checkout: |
+          application_name.txt
+          
     - name: Read ApplicationName from file
       id: read_app_name
-      run: echo "app_name=$(curl -s https://raw.githubusercontent.com/jwhong3004/backstage-application/main/application_name.txt)" > $GITHUB_ENV  
+      run: echo "app_name=$(cat application_name.txt)" > $GITHUB_ENV  
       
     - name: Checkout code
       uses: actions/checkout@v2 
