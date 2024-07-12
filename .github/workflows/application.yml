@@ -12,11 +12,11 @@ on:
         description: 'Name of the Application'  # What's this input for?
         required: false  # Is it optional or required?
       awsRegion:
-        description: 'AWS Region for the Application'
+        description: 'AWS Region'
         required: false
       Replicas:
         type: choice
-        description: 'Count of Application'
+        description: 'Replicas'
         required: false
         options: 
         - '1'
@@ -24,8 +24,12 @@ on:
         - '3'
         - '4'
       action:
+        type: choice
         description: 'Action to perform (apply/destroy)'
         required: true
+        options: 
+        - 'apply'
+        - 'destroy'        
     defaults:
       EKSname: ''
       awsRegion: 'ap-northeast-2'
