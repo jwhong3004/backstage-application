@@ -131,8 +131,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2 
       with:
-        path: ${{ steps.read_app_name.outputs.app_name }}  
-      working-directory: ${{ env.app_name }} 
+        path: ${{ env.app_name }}
               
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
