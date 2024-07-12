@@ -104,10 +104,16 @@ jobs:
     if: ${{ github.event.inputs.action == 'destroy' }}
     
     steps:
+    - name: Read ApplicationName from terraform.tfvars
+      id: read_app_name
+      run: |
+        app_name=$(grep -E '^ApplicationName\s*=\s*".*"' terraform.tfvars | sed -E 's/^ApplicationName\s*=\s*"(.*)"/\1/')
+        echo "::set-output name=app_name::$app_name"
+        
     - name: Checkout code
       uses: actions/checkout@v2 
       with:
-        path: ${{ github.event.inputs.ApplicationName }}        
+        path: ${{ steps.read_app_name.outputs.app_name }}        
       
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
