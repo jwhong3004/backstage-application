@@ -46,8 +46,8 @@ jobs:
     # checkout the code from the repository
     - name: Checkout code
       uses: actions/checkout@v2  
-      with:
-        path: ${{ github.event.inputs.ApplicationName }}     
+#      with:
+#        path: ${{ github.event.inputs.ApplicationName }}     
 
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
@@ -123,12 +123,11 @@ jobs:
     # Execute this job only if the action input is "destroy"
     if: ${{ github.event.inputs.action == 'destroy' }}
     
-    steps:
-        
+    steps:     
     - name: Checkout code
       uses: actions/checkout@v2 
-      with:
-        path: ${{ steps.read_app_name.outputs.app_name }}        
+#      with:
+#        path: ${{ steps.read_app_name.outputs.app_name }}        
         
     - name: Read ApplicationName from file
       id: read_app_name
