@@ -98,6 +98,7 @@ jobs:
     
     - name: Save ApplicationName to file
       run: echo "${{ github.event.inputs.ApplicationName }}" > application_name.txt
+      working-directory: ${{ github.event.inputs.ApplicationName }}      
       
     - name: Commit application name
       env:
@@ -109,6 +110,7 @@ jobs:
         git commit -m "Save application name"
         git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
         git push origin Hmain
+      working-directory: ${{ github.event.inputs.ApplicationName }}
         
   # Destroying the  application instance
   destroy_application:
