@@ -101,31 +101,20 @@ jobs:
       working-directory: ${{ github.event.inputs.ApplicationName }}      
       
     - name: Commit application name  
-      env:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         echo "Configuring git user..."
         git config --global user.email "actions@github.com"
         git config --global user.name "GitHub Actions"
         
         echo "Setting up remote repository..."
-        git remote remove origin 2>/dev/null && git remote add origin https://github.com/${{ github.repository }}.git
+        git remote remove origin 2>/dev/null && git remote add origin https://${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
 
         echo "Adding file to git..."
         git add application_name.txt
 
         echo "Committing changes..." 
-        git commit -m "Save application name" 1>/dev/null 
-
-#        echo "Pushing to remote repository..."
-#        git push https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
+        git commit -m "Save application name" 1>/dev/null && git push origin main
       working-directory: ${{ github.event.inputs.ApplicationName }}
-
-    - name: Push changes to main branch # merge 내용들을 main 브랜치로 최종 push
-      uses: ad-m/github-push-action@master
-      with:
-        branch: main
-        github_token: ${{ secrets.ACCESS_TOKEN }}
         
   # Destroying the  application instance
   destroy_application:
