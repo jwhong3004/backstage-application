@@ -106,8 +106,8 @@ jobs:
         git config --global user.name "GitHub Actions"
         git add application_name.txt
         git commit -m "Save application name"
-        git remote set-url origin https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
-        git push origin main
+        git remote add origin https://github.com/${{ github.repository }}.git
+        git push https://${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
       working-directory: ${{ github.event.inputs.ApplicationName }}
         
   # Destroying the  application instance
