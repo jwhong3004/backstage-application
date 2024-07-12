@@ -109,7 +109,7 @@ jobs:
         git add application_name.txt
         git commit -m "Save application name"
         git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
-        git push origin Hmain
+        git push origin main
       working-directory: ${{ github.event.inputs.ApplicationName }}
         
   # Destroying the  application instance
