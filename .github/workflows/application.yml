@@ -120,13 +120,12 @@ jobs:
 #        echo "Pushing to remote repository..."
 #        git push https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
       working-directory: ${{ github.event.inputs.ApplicationName }}
-      
+
     - name: Push changes to main branch # merge 내용들을 main 브랜치로 최종 push
       uses: ad-m/github-push-action@master
       with:
         branch: main
         github_token: ${{ secrets.GITHUB_TOKEN }}
-      working-directory: ${{ github.event.inputs.ApplicationName }}
         
   # Destroying the  application instance
   destroy_application:
