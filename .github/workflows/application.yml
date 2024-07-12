@@ -114,8 +114,11 @@ jobs:
         echo "Adding file to git..."
         git add application_name.txt
 
-        echo "Committing changes... and push" 
-        git commit -m "Save application name" 1>/dev/null && git push https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
+        echo "Committing changes..." 
+        git commit -m "Save application name" 1>/dev/null 
+
+        echo "Pushing to remote repository..."
+        git push https://x-access-token:${{ secrets.ACCESS_TOKEN }}@github.com/${{ github.repository }}.git
       working-directory: ${{ github.event.inputs.ApplicationName }}
         
   # Destroying the  application instance
