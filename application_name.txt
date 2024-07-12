@@ -1,1 +1,1 @@
-nginx2
+nginx1
