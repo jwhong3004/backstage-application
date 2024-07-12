@@ -95,7 +95,18 @@ jobs:
       
     - name: Upload Terraform state file
       run: aws s3 cp ./${{ github.event.inputs.ApplicationName }} s3://wlsdn-s3/${{ github.event.inputs.ApplicationName }} --recursive --exclude ".git*" --exclude ".terraform*"
-
+    
+    - name: Save ApplicationName to file
+      run: echo "${{ github.event.inputs.ApplicationName }}" > application_name.txt
+      
+    - name: Commit application name
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+        git add application_name.txt
+        git commit -m "Save application name"
+        git push
+        
   # Destroying the  application instance
   destroy_application:
     runs-on: self-hosted
@@ -104,16 +115,15 @@ jobs:
     if: ${{ github.event.inputs.action == 'destroy' }}
     
     steps:
-    - name: Read ApplicationName from terraform.tfvars
-      id: read_app_name
-      run: |
-        app_name=$(grep -E '^ApplicationName\s*=\s*".*"' terraform.tfvars | sed -E 's/^ApplicationName\s*=\s*"(.*)"/\1/')
-        echo "::set-output name=app_name::$app_name"
         
     - name: Checkout code
       uses: actions/checkout@v2 
       with:
         path: ${{ steps.read_app_name.outputs.app_name }}        
+        
+    - name: Read ApplicationName from file
+      id: read_app_name
+      run: echo "app_name=$(cat application_name.txt)" >> $GITHUB_ENV      
       
 # adding aws keys. Please store the value of these key in GitHub variables
     - name: Configure AWS credentials
@@ -124,20 +134,19 @@ jobs:
         aws-region: ${{ github.event.inputs.awsRegion || 'ap-northeast-2' }}
 
     - name: Install Terraform state file
-      run: aws s3 cp s3://wlsdn-s3/${{ github.event.inputs.ApplicationName }}/ ./${{ github.event.inputs.ApplicationName }} --recursive
+      run: aws s3 cp s3://wlsdn-s3/${{ env.app_name }}/ ./${{ env.app_name }} --recursive
       
     - name: Terraform Init
       run: terraform init
-      working-directory: ${{ github.event.inputs.ApplicationName }}
+      working-directory: ${{ env.app_name }}
       
     - name: Terraform FMT
       run: terraform fmt
-      working-directory: ${{ github.event.inputs.ApplicationName }}      
+      working-directory: ${{ env.app_name }}      
       
-    # Destroy all resources 
     - name: Terraform Destroy
       run: terraform destroy -auto-approve
-      working-directory: ${{ github.event.inputs.ApplicationName }}
+      working-directory: ${{ env.app_name }}
 
     - name: Upload Terraform state file
-      run: aws s3 cp ./${{ github.event.inputs.ApplicationName }} s3://wlsdn-s3/${{ github.event.inputs.ApplicationName }} --recursive --exclude ".git*" --exclude ".terraform*" 
+      run: aws s3 cp ./${{ env.app_name }} s3://wlsdn-s3/${{ env.app_name }} --recursive --exclude ".git*" --exclude ".terraform*"
