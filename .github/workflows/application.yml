@@ -10,7 +10,7 @@ on:
         description: 'Name of the EKS' 
         required: false  # Is it optional or required?  
         options:
-        - 'stadnard-eks'
+        - 'standard-eks'
       ApplicationName:
         description: 'Name of the Application'  # What's this input for?
         required: false  # Is it optional or required?
