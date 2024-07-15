@@ -6,14 +6,21 @@ on:
     # Define inputs that are required for the manual trigger
     inputs:
       EKSname:
+        type: choice
         description: 'Name of the EKS' 
-        required: false  # Is it optional or required?      
+        required: false  # Is it optional or required?  
+        options:
+        - 'stadnard-eks'
       ApplicationName:
         description: 'Name of the Application'  # What's this input for?
         required: false  # Is it optional or required?
       awsRegion:
+        type: choice
         description: 'AWS Region'
         required: false
+        options: 
+        - 'ap-northeast-2'
+        - 'ua-east-1'     
       Replicas:
         type: choice
         description: 'Replicas'
